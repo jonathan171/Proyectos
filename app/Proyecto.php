@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    protected $guarded = [];
+ 
 
 
-
+ protected $table = "repositorios";
     //Query Scope
 
 public function scopeAutor($query, $autor){

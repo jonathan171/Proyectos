@@ -62,7 +62,15 @@
                         <li class="nav-item">
                                     <a class="nav-link" href="{!!URL::to('/')!!}"> Listar Todos los Proyectos  </a>
                         </li>
-                       
+                        <li class="nav-item">
+                                    <a class="nav-link" href="{!!URL::to('/autores')!!}"> Autores </a>
+                        </li>
+                         <li class="nav-item">
+                                    <a class="nav-link" href="{!!URL::to('/Relacion')!!}"> Relacion Profesores Proyecto </a>
+                        </li>
+                        <li class="nav-item">
+                                    <a class="nav-link" href="{!!URL::to('contenido/create-step1')!!}"> Registrar Proyectos  </a>
+                        </li>
 
 
                         <li class="nav-item">
@@ -74,15 +82,7 @@
                                 </li>
                             @endif
                         @else
-                         <li class="nav-item">
-                                    <a class="nav-link" href="{!!URL::to('/createProfesores')!!}"> Registrar profesores  </a>
-                        </li>
-                         <li class="nav-item">
-                                    <a class="nav-link" href="{!!URL::to('/Relacion')!!}"> Relacion Profesores Proyecto </a>
-                        </li>
-                        <li class="nav-item">
-                                    <a class="nav-link" href="{!!URL::to('contenido/create-step1')!!}"> Registrar Proyectos  </a>
-                        </li>
+                       
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -104,51 +104,6 @@
                     </ul>
     </header>
 
-    <div class="app-body">
-        <div class="sidebar">
-            <nav class="sidebar-nav">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="main.html"><i class="icon-speedometer"></i> Escritorio</a>
-                    </li>
-                    <li class="nav-title">
-                    REPOSITORIO UDI
-                    </li>
-                    <!-- <li class="nav-item nav-dropdown navbar-nav ml-auto">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-bag"></i>Proyectos</a>
-                        <ul class="nav-dropdown-items">
-
-
-
-                            <a class="nav-link" href="{!!URL::to('contenido/create-step1')!!}"><i class="icon-bag"></i>Registrar Proyectos</a>
-                             <a class="nav-link" href="{{ action('ProyectoController@createStep1') }}"><i class="icon-bag"></i>Registrar Proyectos</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-bag"></i>Consultar proyectos</a>
-                            </li>
-                        </ul>
-                    </li> -->
-                    <!-- <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i>Estudiantes Udi</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="i#"><i class="icon-wallet"></i>Registrar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-notebook"></i>Consultar</a>
-                            </li>
-                        </ul>
-                    </li> -->
-
-                </ul>
-            </nav>
-            <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-        </div>
-
-        <!-- Contenido Principal -->
-        @yield('contenido')
-        <!-- /Fin del contenido principal -->
-    </div>
 
 
 

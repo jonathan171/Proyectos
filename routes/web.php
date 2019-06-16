@@ -44,4 +44,8 @@ Route::get('/contenido/create-step1', ['uses' => 'ProyectoController@createStep1
 Route::resource('proyecto', 'ProyectoController');
 Route::get('/createProfesores', 'ProfesorController@registro');
 Route::get('/Relacion', 'ProfesorController@relacion');
+Route::get('/autores', 'autorController@index');
+Route::resource('autor','autorController');
+
+
 
