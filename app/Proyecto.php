@@ -10,6 +10,7 @@ class Proyecto extends Model
 
 
  protected $table = "repositorios";
+ protected $fillable = ['fecha','titulo','resumen','abstract','proyectimg','programa','estado','tipoRepositorio'];
     //Query Scope
 
 public function scopeAutor($query, $autor){

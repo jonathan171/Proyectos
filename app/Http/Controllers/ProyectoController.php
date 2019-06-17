@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Proyecto;
+use App\tipoRepositorio;
+use App\estado;
 
 class ProyectoController extends Controller
 {
@@ -18,11 +20,7 @@ class ProyectoController extends Controller
         $titulo = $request->get('titulo');
         $fecha = $request->get('fecha');
         $request->session()->forget('proyecto');
-        $proyectos = Proyecto::orderBy('ID','DESC')
-        ->autor($autor)
-        ->titulo($titulo)
-        ->fecha($fecha)
-        ->paginate(3);
+        $proyectos = Proyecto::orderBy('ID','DESC')->autor($autor)->titulo($titulo)->fecha($fecha)->paginate(3);
         return view('contenido.contenido',compact('proyectos',$proyectos));
     }
 
@@ -33,8 +31,9 @@ class ProyectoController extends Controller
      */
     public function createStep1(Request $request)
     {
+        $tipos=tipoRepositorio::all();
         $proyecto = $request->session()->get('proyecto');
-        return view('contenido.create-step1',compact('proyecto', $proyecto));
+        return view('contenido.create-step1',compact('proyecto','tipos'));
     }
 
     /**
@@ -47,26 +46,99 @@ class ProyectoController extends Controller
     {
         // 'email' => 'required',
         $validatedData = $request->validate([
-            'titulo' => 'required|unique:proyectos',
-            'autor' => 'required',
-            'identificacion' => 'required|numeric',
+            'titulo' => 'required|unique:repositorios',
             'fecha' => 'required',
             'resumen' => 'required',
             'abstract' => 'required',
+            'proyectimg' => 'required',
+            'programa' => 'required',
+            'tipoRepositorio' => 'required',
+        
+        
         ]);
+        //obtenemos el campo file definido en el formulario
+       $file = $request->file('proyectimg');
+ 
+       //obtenemos el nombre del archivo
+       $nombre = $file->getClientOriginalName();
 
-        if(empty($request->session()->get('proyecto'))){
-            $proyecto = new Proyecto();
-            $proyecto->fill($validatedData);
-            $request->session()->put('proyecto', $proyecto);
+ 
+       //indicamos que queremos guardar un nuevo archivo en el disco local
+       \Storage::disk('local')->put($nombre,  \File::get($file));
+ 
+      
+         $registro  = new Proyecto;
+        $registro->titulo  = $request->input('titulo');
+        $registro->fecha  = $request->input('fecha');
+        $registro->resumen  = $request->input('resumen');
+        $registro->abstract  = $request->input('abstract');
+        $registro->proyectimg  = $nombre;
+        $registro->programa  = $request->input('programa');
+        $registro->estado = '1';
+        $registro->tipoRepositorio  = $request->input('tipoRepositorio');
+        $registro->save();
+        
+
+       return redirect('/');
+         
+    }
+     public function update(Request $request,$id)
+    {
+        // 'email' => 'required',
+        $validatedData = $request->validate([
+            'titulo' => 'required',
+            'fecha' => 'required',
+            'resumen' => 'required',
+            'abstract' => 'required',
+            'programa' => 'required',
+            'tipoRepositorio' => 'required',
+            'estado' => 'required',
+
+
+        
+        
+        ]); 
+          if ($request->file('proyectimg')) {
+        $file = $request->file('proyectimg');
+ 
+       //obtenemos el nombre del archivo
+       $nombre = $file->getClientOriginalName();
+     
+            # code...
+             //obtenemos el campo file definido en el formulario
+       
+ 
+       //indicamos que queremos guardar un nuevo archivo en el disco local
+       \Storage::disk('local')->put($nombre,  \File::get($file));
+
+        $registro  = Proyecto::find($id);
+        $registro->titulo  = $request->input('titulo');
+        $registro->fecha  = $request->input('fecha');
+        $registro->resumen  = $request->input('resumen');
+        $registro->abstract  = $request->input('abstract');
+        $registro->proyectimg  = $nombre;
+        $registro->programa  = $request->input('programa');
+        $registro->estado = $request->input('estado');;
+        $registro->tipoRepositorio  = $request->input('tipoRepositorio');
+        $registro->save();
+          return redirect('/');
         }else{
-            $proyecto = $request->session()->get('proyecto');
-            $proyecto->fill($validatedData);
-            $request->session()->put('proyecto', $proyecto);
+          $registro  = Proyecto::find($id);
+        $registro->titulo  = $request->input('titulo');
+        $registro->fecha  = $request->input('fecha');
+        $registro->resumen  = $request->input('resumen');
+        $registro->abstract  = $request->input('abstract');
+        $registro->programa  = $request->input('programa');
+        $registro->estado = $request->input('estado');;
+        $registro->tipoRepositorio  = $request->input('tipoRepositorio');
+        $registro->save();
+    
+         return redirect('/');
         }
+       
 
-        return redirect('/contenido/create-step2');
-
+      
+         
     }
 
     /**
@@ -74,74 +146,7 @@ class ProyectoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createStep2(Request $request)
-    {
-        $proyecto = $request->session()->get('proyecto');
-        return view('contenido.create-step2',compact('proyecto', $proyecto));
-    }
-
-    /**
-     * Post Request to store step1 info in session
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function postCreateStep2(Request $request)
-    {
-        $proyecto = $request->session()->get('proyecto');
-
-
-        if(!isset($proyecto->proyectImg) && !isset($proyecto->palabrasclave) && !isset($proyecto->keywords)) {
-            $request->validate([
-                // 'proyectimg' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'palabrasclave' => 'required',
-            ]);
-
-            // $fileName = "proyectImage-" . time() . '.' . request()->proyectimg->getClientOriginalExtension();
-            // $palabrasclave = $proyecto->palabrasclave;
-            // $request->proyectimg->storeAs('proyectimg', $fileName);
-
-            // $request->palabrasclave->storeAs('palabrasclave', $palabrasclave);
-
-            $file = $request->file('proyectimg');
-            $nombre = $file->getClientOriginalName();
-            \Storage::disk('local')->put($nombre, \File::get($file));
-
-            // $proyecto = $request->session()->get('proyecto');
-            $proyecto->palabrasclave = $_POST["palabrasclave"];
-            $proyecto->keywords = $_POST["keywords"];
-            $proyecto->patrocinador = $_POST["patrocinador"];
-            // $proyecto->proyectImg = $fileName;
-            $proyecto->proyectImg = $nombre;
-            $request->session()->put('proyecto', $proyecto);
-        }
-        return redirect('/contenido/create-step3');
-
-    }
-
-    /**
-     * Show the Proyecto Review page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function removeImage(Request $request)
-    {
-        $proyecto = $request->session()->get('proyecto');
-        $proyecto->proyectImg = null;
-        return view('contenido.create-step2',compact('proyecto', $proyecto));
-    }
-
-    /**
-     * Show the Proyecto Review page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function createStep3(Request $request)
-    {
-        $proyecto = $request->session()->get('proyecto');
-        return view('contenido.create-step3',compact('proyecto',$proyecto));
-    }
-
+    
     /**
      * Store proyecto
      *
@@ -163,8 +168,10 @@ class ProyectoController extends Controller
 
     public function edit($id)
     {
+        $tipos=tipoRepositorio::all();
+        $estados=estado::all();
         $proyecto=Proyecto::find($id);
-        return view('contenido.edit',compact('proyecto'));
+        return view('contenido.edit',compact('proyecto','tipos','estados'));
     }
 
 }

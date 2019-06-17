@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\autor;
-
-class autorController extends Controller
+use App\User;
+use App\rol;
+class userController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,9 @@ class autorController extends Controller
     public function index()
     {
         //
-        $autores=autor::orderBy('cedula','DESC')->paginate(10);
-        return view('autores.index',compact('autores'));
+              $Roles=rol::all();
+             $Usuarios=User::orderBy('id','DESC')->paginate(10);
+        return view('usuarios.index',compact('Usuarios','Roles'));
 
 
     }
@@ -29,7 +30,8 @@ class autorController extends Controller
     public function create()
     {
         //
-        return view('autores.create');
+        
+
     }
 
     /**
@@ -40,12 +42,8 @@ class autorController extends Controller
      */
     public function store(Request $request)
     {
+        //
 
-       //
-         $this->validate($request,[ 'cedula'=>'required', 'nombre'=>'required', 'email'=>'required', 'fechanac'=>'required', 'genero'=>'required', 'celular'=>'required',]);
-        autor::create($request->all());
-        return redirect()->route('autor.index')->with('success','Registro creado satisfactoriamente');
-    
     }
 
     /**
@@ -57,8 +55,6 @@ class autorController extends Controller
     public function show($id)
     {
         //
-         $autores=autor::find($id);
-        return  view('autores.index',compact('autores'));
     }
 
     /**
@@ -69,9 +65,11 @@ class autorController extends Controller
      */
     public function edit($id)
     {
-        //
-        $autores=autor::find($id);
-        return view('autores.edit',compact('autores'));
+        //;
+        
+         $Roles=rol::all();
+        $usuario=User::find($id);
+        return view('usuarios.edit',compact('usuario','Roles'));
     }
 
     /**
@@ -84,12 +82,10 @@ class autorController extends Controller
     public function update(Request $request, $id)
     {
         //
-          $this->validate($request,[ 'cedula'=>'required', 'nombre'=>'required', 'email'=>'required', 'fechanac'=>'required', 'genero'=>'required', 'celular'=>'required',]);
- 
-        autor::find($id)->update($request->all());
-        return redirect()->route('autor.index')->with('success','Registro actualizado satisfactoriamente');
- 
-    
+         $this->validate($request,['name'=>'required', 'email'=>'required', 'estado'=>'required', 'rolID'=>'required',]);
+            User::find($id)->update($request->all());
+        return redirect()->route('usuario.index')->with('success','Registro creado satisfactoriamente');
+
     }
 
     /**
@@ -101,7 +97,7 @@ class autorController extends Controller
     public function destroy($id)
     {
         //
-         autor::find($id)->delete();
-        return redirect()->route('autor.index')->with('success','Registro eliminado satisfactoriamente');
+         User::find($id)->delete();
+        return redirect()->route('usuario.index')->with('success','Registro eliminado satisfactoriamente');
     }
 }

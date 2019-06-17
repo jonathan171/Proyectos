@@ -46,6 +46,8 @@ Route::get('/createProfesores', 'ProfesorController@registro');
 Route::get('/Relacion', 'ProfesorController@relacion');
 Route::get('/autores', 'autorController@index');
 Route::resource('autor','autorController');
-
-
-
+Route::get('/ciudades','autorController@getCiudad')->name('ciudades');
+Route::resource('publicacion','publicacionController');
+Route::get('/publicaciones', 'publicacionController@index');
+Route::resource('usuario','userController');
+Route::get('/usuarios', 'userController@index');

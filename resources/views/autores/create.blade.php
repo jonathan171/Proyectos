@@ -51,15 +51,27 @@
 								</div>
 								<div class="col-xs-6 col-sm-6 col-md-6">
 									<div class="form-group">
-										<select name="genero" class="form-control input-lg">
+										<select name="genero" class="selectpicker">
                                          <option value="Masculino">Masculino</option>
                                          <option value="Femenino">Femenino</option>
                                          <option value="Sin especificar">Sin especificar</option>
+                                         	</select>
 									</div>
 								</div>
-							</div>
+								<div class="col-xs-6 col-sm-6 col-md-6">
+									<div class="form-group">
+										<select name="departamento" class="selectpicker" id="depart" required="true">
+                                       @foreach ($estadosArray as $index =>  $descripcion)
+									<option value="{{$index}}" {{old('estado_id')== $index ? 'selected': ''}}>{{ $descripcion}}</option>
+									@endforeach
+								</select>
+							
+									</div>
+								</div>
+							<br>
+							
 							<div class="form-group">
-								<input name="celular" class="form-control input-sm" placeholder="numero de celular"></textarea>
+								<input name="celular" class="form-control input-sm" placeholder="numero de celular">
 							</div>
 							<div class="row">
  
@@ -76,4 +88,40 @@
 			</div>
 		</div>
 	</section>
+	<script type="text/javascript">
+		
+		/*$.ajaxSetup({
+             headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')     
+     }
+ }); 
+	</script>
+	<script >
+/*	
+$(document).ready(function(){
+
+ $('#depart').on('change',function(){
+
+  var punto = document.getElementById("depart").value;
+   alert(punto);
+      $.ajax({
+          route: 'ciudades',
+          type: 'GET',
+          data: {punto:punto},
+          dataType: 'JSON',
+          error: function(respuesta) {alert("Error...");},
+          success: function(respuesta) {
+            if (respuesta) {
+              alert("Exito...");
+              return false;
+            }else {
+              alert("Error...");return false;
+            }
+          }
+      });
+ });
+});
+*/
+
+</script>
 	@endsection

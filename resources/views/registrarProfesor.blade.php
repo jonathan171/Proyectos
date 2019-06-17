@@ -1,5 +1,5 @@
-@extends('principal')
-@section('contenido')
+@extends('layouts.layout')
+@section('content')
 <div class="container">
 <div class="panel-heading"><h2>Registrar Nuevo Profesor</h2></div>
 <form  class="ubication" action="{{route('addProfesor')}}"  method="POST" >

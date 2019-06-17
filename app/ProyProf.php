@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProyProf extends Model
 {
-   protected $table = "proy_prof";
+   protected $table = "autrep";
 /**
      * The attributes that are mass assignable.
      *

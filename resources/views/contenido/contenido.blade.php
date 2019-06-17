@@ -1,5 +1,5 @@
-@extends('principal')
-@section('contenido')
+@extends('layouts.layout')
+@section('content')
 <main class="main">
             <!-- Breadcrumb -->
             <!-- <ol class="breadcrumb">
@@ -66,6 +66,8 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+        @if($proyectos !=null)
         @foreach($proyectos as $proyecto)
             <tr>
                 <td>
@@ -100,6 +102,8 @@
 
             </tr>
         @endforeach
+
+
         </tbody>
                         </table>
                         {!!$proyectos->render()!!}
@@ -107,7 +111,12 @@
                     </div>
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
-            </div>
+            </div>}
+       @endif
+            @if($proyectos ==null) 
+        <h1>NO HAY REGISTROS</h1>
+            
+            @endif
             <!--Inicio del modal agregar/actualizar-->
             <div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -136,34 +145,6 @@
                             </form> -->
 
 
-            <!-- aqui empieza form modal -->
-            <!-- <form method="POST" action="{{ route('proyecto.edit',$proyecto->id) }}"  role="form">
-							{{ csrf_field() }}
-							<input name="_method" type="hidden" value="PATCH">
-							<div class="row">
-								<div class="col-xs-6 col-sm-6 col-md-6">
-									<div class="form-group">
-										<input type="text" name="autor" id="autor" class="form-control input-sm" value="{{$proyecto->autor}}">
-									</div>
-								</div>
-								<div class="col-xs-6 col-sm-6 col-md-6">
-									<div class="form-group">
-										<input type="text" name="titulo" id="titulo" class="form-control input-sm" value="{{$proyecto->titulo}}">
-									</div>
-								</div>
-							</div>
-
-
-							<div class="row">
-
-								<div class="col-xs-12 col-sm-12 col-md-12">
-									<input type="submit"  value="Actualizar" class="btn btn-success btn-block">
-
-								</div>
-
-							</div>
-						</form> -->
-            <!-- aqui acaba form modal -->
 
 
 

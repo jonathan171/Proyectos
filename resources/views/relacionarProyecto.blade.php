@@ -1,5 +1,6 @@
-@extends('principal')
-@section('contenido')
+@extends('layouts.layout')
+@section('content')
+
 <div class="container">
 <div class="panel-heading"><h2>Registrar relacion</h2></div>
 <form  class="ubication" action="{{route("RegistrarRelacion")}}" method="POST">
@@ -15,26 +16,16 @@
 					@endforeach
 			</select>
 		</div>
-       <div class="form-group">
-	<label for="exampleInputEmail1">Rol del profesor   </label>
-		<select class="form-control input-lg" name="rol" required="true">
-
-			<option value="{{ old('rol')== null? '' : old('rol')}}" >{{ old('rol')== null? "Seleccione Un rol" : old('rol')}}</option>
-
-			@foreach ($lista_tipos as $tipo)
-			<option value="{{ $tipo->id}}">{{ $tipo->tipo_profesor}}</option>
-					@endforeach
-			</select>
-		</div>
+    
 
           <div class="form-group">
-	<label for="exampleInputEmail1">profesor   </label>
-		<select class="form-control input-lg" name="profesor" required="true">
+	<label for="exampleInputEmail1">Autor   </label>
+		<select multiple class="selectpicker" name="autor.autorId" required="true" id="my-select">
 
-			<option value="{{ old('profesor ')== null? '' : old('profesor ')}}" >{{ old('profesor ')== null? "Seleccione Un profesor " : old('profesor')}}</option>
+			<option value="{{ old('autor ')== null? '' : old('autor ')}}" >{{ old('autor ')== null? "Seleccione Un Autor" : old('autor')}}</option>
 
-			@foreach ($lista_profesores as $profesor)
-			<option value="{{$profesor->id}}">{{ $profesor->nombre}}</option>
+			@foreach ($lista_autores as $autor)
+			<option value="{{$autor->id}}">{{ $autor->nombre}}</option>
 					@endforeach
 			</select>
 		</div>
@@ -46,4 +37,7 @@
 
 </form>
 </div>
+<script >
+	$('#my-select').multiSelect();
+</script>
 @endsection

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\publicacion;
+use App\Proyecto;
+use App\User;
+
+
 
 class publicacionController extends Controller
 {
@@ -14,6 +19,10 @@ class publicacionController extends Controller
     public function index()
     {
         //
+         $Repositorios=Proyecto::all();
+         $Usuarios=User::all();
+         $Publicaciones=publicacion::orderBy('fechaPublicacion','DESC')->paginate(10);
+        return view('Publicacion.index',compact('Publicaciones','Repositorios','Usuarios'));
     }
 
     /**
@@ -24,6 +33,10 @@ class publicacionController extends Controller
     public function create()
     {
         //
+        $Repositorios=Proyecto::all();
+         $Usuarios=User::all();
+
+        return view('Publicacion.create',compact('Repositorios','Usuarios'));
     }
 
     /**
@@ -35,6 +48,10 @@ class publicacionController extends Controller
     public function store(Request $request)
     {
         //
+         $this->validate($request,[ 'fechaPublicacion'=>'required', 'observacion'=>'required', 'idRepositorio'=>'required', 'idEstudiante'=>'required',]);
+        publicacion::create($request->all());
+        return redirect()->route('publicacion.index')->with('success','Registro creado satisfactoriamente');
+    
     }
 
     /**
@@ -46,6 +63,8 @@ class publicacionController extends Controller
     public function show($id)
     {
         //
+          $Publicaciones=publicacion::find($id);
+        return  view('P.index',compact('Publicaciones'));
     }
 
     /**
@@ -57,6 +76,11 @@ class publicacionController extends Controller
     public function edit($id)
     {
         //
+        $Repositorios=Proyecto::all();
+         $Usuarios=User::all();
+        $publicacion=publicacion::find($id);
+        return view('Publicacion.edit',compact('publicacion','Usuarios','Repositorios'));
+    
     }
 
     /**
@@ -69,6 +93,9 @@ class publicacionController extends Controller
     public function update(Request $request, $id)
     {
         //
+          $this->validate($request,[ 'fechaPublicacion'=>'required', 'observacion'=>'required', 'idRepositorio'=>'required', 'idEstudiante'=>'required',]);
+        publicacion::find($id)->update($request->all());
+        return redirect()->route('publicacion.index')->with('success','Registro actualizado satisfactoriamente');
     }
 
     /**
@@ -80,5 +107,8 @@ class publicacionController extends Controller
     public function destroy($id)
     {
         //
+        //
+         publicacion::find($id)->delete();
+        return redirect()->route('publicacion.index')->with('success','Registro eliminado satisfactoriamente');
     }
 }
